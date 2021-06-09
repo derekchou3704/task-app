@@ -16,10 +16,32 @@ router.post('/tasks', auth, async (req, res) => {
     }
 })
 
+// GET /tasks?completed=true
+// GET /tasks?limit=2&skip=3 (limit is how many results at most to be shown, and skip is the page)
+// GET /tasks?sortBy=createdAt:desc (stucture: [sort method][special symbol used for split][sort value]; ascending(default) = 1)
 router.get('/tasks', auth, async (req, res) => {
+    const match = {}
+    const sort = {}
+
+    if (req.query.completed) {
+        match.completed = req.query === 'true'
+    }
+
+    if (req.query.sortBy) {
+        const parts = req.query.sortBy.split(':')
+        sort[parts[0]] = parts[1] === 'desc' ? -1 : 1
+    }
+
     try {
-        // const tasks = await Task.find({ owner: req.user._id }) //alternate method
-        await req.user.populate('tasks').execPopulate()
+        await req.user.populate({
+            path: 'tasks',
+            match,
+            options: {
+                limit: parseInt(req.query.limit),
+                skip: parseInt(req.query.skip),
+                sort
+            }
+        }).execPopulate()
         res.status(200).send(req.user.tasks)
     } catch (e) {
         res.status(500).send()
