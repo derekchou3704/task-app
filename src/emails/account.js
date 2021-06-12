@@ -12,7 +12,7 @@ const sendWelcomeEmail = async (email, name) => {
     }
     try {
         await sgMail.send(msg)
-        console.log('Email sent')
+        // console.log('Email sent')
     } catch (e) {
         console.log(e)
     }
@@ -27,7 +27,7 @@ const sendCancelationEmail = async (email, name) => {
     }
     try {
         await sgMail.send(msg)
-        console.log('Email sent')
+        // console.log('Email sent')
     } catch (e) {
         console.log(e)
     }
