@@ -15,7 +15,7 @@ router.post('/users', async (req, res) => {
         await user.save()
         res.status(201).send({ user, token })
     } catch (e) {
-        res.status(400).send(e)
+        res.status(400).send()
     }
 })
 
@@ -26,7 +26,7 @@ router.post('/users/login', async (req, res) => {
 
         res.status(200).send({ user: user.toJSON(), token })
     } catch (e) {
-        res.status(400).send(e)
+        res.status(400).send()
     }
 })
 
@@ -70,7 +70,7 @@ router.patch('/users/me', auth, async (req, res) => {
         await req.user.save()
         res.status(200).send(req.user)
     } catch (e) {
-        res.status(400).send(e)
+        res.status(400).send()
     }   
 })
 
@@ -80,7 +80,7 @@ router.delete('/users/me', auth, async (req, res) => {
         await req.user.remove()
         res.status(200).send(req.user)
     } catch (e) {
-        res.status(500).send(e)
+        res.status(500).send()
     }
 })
 
